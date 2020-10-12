@@ -17,7 +17,7 @@ class _CanvasWidgetState extends State<CanvasWidget> {
   @override
   void initState() {
     _wavePainter = TestingPainter(repaint: _repaint);
-    Timer.periodic( Duration(milliseconds: 40), (Timer timer) {
+    Timer.periodic(Duration(milliseconds: 40), (Timer timer) {
       _repaint.value++;
     });
     super.initState();
@@ -26,7 +26,7 @@ class _CanvasWidgetState extends State<CanvasWidget> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-       painter: _wavePainter,
+      painter: _wavePainter,
     );
   }
 }
@@ -38,24 +38,21 @@ class TestingPainter extends CustomPainter {
   List<double> _pointsToDraw = List<double>();
   int _currentIndex = 0;
 
-  TestingPainter({Listenable repaint}): super(repaint: repaint);
+  TestingPainter({Listenable repaint}) : super(repaint: repaint);
 
   @override
   void paint(Canvas canvas, Size size) {
-    if(_pointsToDraw.length != size.width.toInt())
-    {
+    if (_pointsToDraw.length != size.width.toInt()) {
       _pointsToDraw = List.filled(size.width.toInt(), -1);
       _currentIndex = 0;
     }
 
     // Add new points to draw
-    for(int i = 0; i < _numberPixelsToDraw; i++)
-    {
-      if(_currentIndex >= _pointsToDraw.length)
-      {
+    for (int i = 0; i < _numberPixelsToDraw; i++) {
+      if (_currentIndex >= _pointsToDraw.length) {
         _currentIndex = 0;
       }
-      _pointsToDraw[_currentIndex] = _rng.nextInt(size.height.toInt()).toDouble();      
+      _pointsToDraw[_currentIndex] = _rng.nextInt(size.height.toInt()).toDouble();
       _currentIndex++;
     }
 
@@ -63,15 +60,15 @@ class TestingPainter extends CustomPainter {
     paint.color = Colors.green;
 
     double previousPoint = _pointsToDraw.first;
-    for(int i = 1; i < _pointsToDraw.length; i++)
-    {
+    for (int i = 1; i < _pointsToDraw.length; i++) {
       var point = _pointsToDraw[i];
-      if(point < 0) {
+      if (point < 0) {
         break;
       }
-      canvas.drawLine(Offset((i - 1).toDouble(), previousPoint), Offset(i.toDouble(), point), paint);
+      canvas.drawLine(
+          Offset((i - 1).toDouble(), previousPoint), Offset(i.toDouble(), point), paint);
       previousPoint = point;
-    }    
+    }
   }
 
   @override

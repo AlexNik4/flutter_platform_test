@@ -12,7 +12,6 @@ import 'singletons/camera_provider.dart';
 
 // A screen that allows users to take a picture using a given camera.
 class CameraWidget extends StatefulWidget {
-
   const CameraWidget({
     Key key,
   }) : super(key: key);
@@ -32,7 +31,7 @@ class CameraWidgetState extends State<CameraWidget> {
     _camera = GetIt.I.get<CameraProvider>().firstCamera;
     // To display the current output from the Camera,
     // create a CameraController.
-    _controller = CameraController(_camera, ResolutionPreset.medium);
+    _controller = CameraController(_camera, ResolutionPreset.ultraHigh);
 
     // Next, initialize the controller. This returns a Future.
     _initializeControllerFuture = _controller.initialize();
@@ -47,8 +46,7 @@ class CameraWidgetState extends State<CameraWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if(kIsWeb)
-    {
+    if (kIsWeb) {
       return Center(child: Text("Not Supported on Web"));
     }
 

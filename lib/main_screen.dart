@@ -40,12 +40,12 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
           tabs: _myTabs,
         ),
       ),
-      drawer: Stack(children: [
-        Drawer(
-          child: CanvasWidget(),
-        ),
-        Center(child: Text("I dont know what to add here")),
-      ]),
+      drawer: Drawer(
+        child: Stack(fit: StackFit.expand, children: [
+          Center(child: Text("I dont know what to add here")),
+          CanvasWidget(),
+        ]),
+      ),
       body: TabBarView(controller: _tabController, children: <Widget>[
         CameraWidget(),
         CanvasWidget(),
