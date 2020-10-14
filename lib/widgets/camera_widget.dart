@@ -3,12 +3,11 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'singletons/camera_provider.dart';
+import '../singletons/camera_provider.dart';
 
 // A screen that allows users to take a picture using a given camera.
 class CameraWidget extends StatefulWidget {
@@ -34,7 +33,12 @@ class CameraWidgetState extends State<CameraWidget> {
     _controller = CameraController(_camera, ResolutionPreset.ultraHigh);
 
     // Next, initialize the controller. This returns a Future.
-    _initializeControllerFuture = _controller.initialize();
+    try {
+      _initializeControllerFuture = _controller.initialize();
+    } catch (e) {
+      // If an error occurs, log the error to the console.
+      print(e);
+    }
   }
 
   @override
@@ -67,6 +71,7 @@ class CameraWidgetState extends State<CameraWidget> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "btn1",
         child: Icon(Icons.camera_alt),
         // Provide an onPressed callback.
         onPressed: () async {

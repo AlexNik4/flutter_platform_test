@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform/main_screen.dart';
+import 'package:flutter_platform/screens/main_screen.dart';
 import 'package:flutter_platform/singletons/camera_provider.dart';
 import 'package:get_it/get_it.dart';
 

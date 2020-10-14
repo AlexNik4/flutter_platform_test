@@ -34,14 +34,18 @@ class _CanvasWidgetState extends State<CanvasWidget> {
 class TestingPainter extends CustomPainter {
   static const double _numberPixelsToDraw = 3;
   final _rng = Random();
+  final _paint = Paint();
 
   List<double> _pointsToDraw = List<double>();
   int _currentIndex = 0;
 
-  TestingPainter({Listenable repaint}) : super(repaint: repaint);
+  TestingPainter({Listenable repaint}) : super(repaint: repaint) {
+    _paint.color = Colors.green;
+    _paint.style = PaintingStyle.stroke;
+  }
 
   @override
-  void paint(Canvas canvas, Size size) {
+  Future<void> paint(Canvas canvas, Size size) async {
     if (_pointsToDraw.length != size.width.toInt()) {
       _pointsToDraw = List.filled(size.width.toInt(), -1);
       _currentIndex = 0;
@@ -56,19 +60,21 @@ class TestingPainter extends CustomPainter {
       _currentIndex++;
     }
 
-    var paint = Paint();
-    paint.color = Colors.green;
-
-    double previousPoint = _pointsToDraw.first;
-    for (int i = 1; i < _pointsToDraw.length; i++) {
+    var path = Path();
+    for (int i = 0; i < _pointsToDraw.length; i++) {
       var point = _pointsToDraw[i];
       if (point < 0) {
         break;
       }
-      canvas.drawLine(
-          Offset((i - 1).toDouble(), previousPoint), Offset(i.toDouble(), point), paint);
-      previousPoint = point;
+
+      if (i == 0) {
+        path.moveTo(0, point);
+      } else {
+        path.lineTo(i.toDouble(), point);
+      }
     }
+
+    canvas.drawPath(path, _paint);
   }
 
   @override
