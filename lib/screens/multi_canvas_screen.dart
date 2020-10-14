@@ -25,7 +25,7 @@ class _MultiCanvasScreenState extends State<MultiCanvasScreen> {
           // Convert each item into a widget based on the type of item it is.
           itemBuilder: (context, index) {
             return SizedBox(
-              height: MediaQuery.of(context).size.width > 600 ? 200 : 100,
+              height: MediaQuery.of(context).size.width > 600 ? 200 : 80,
               child: listOfCanvases[index],
             );
           },

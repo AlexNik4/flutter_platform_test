@@ -43,7 +43,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
               Center(child: Text("I dont know what to add here")),
             ]),
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
             ),
           ),
           ListTile(

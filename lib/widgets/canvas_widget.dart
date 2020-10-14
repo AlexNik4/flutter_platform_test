@@ -10,7 +10,7 @@ class CanvasWidget extends StatefulWidget {
   _CanvasWidgetState createState() => _CanvasWidgetState();
 }
 
-class _CanvasWidgetState extends State<CanvasWidget> {
+class _CanvasWidgetState extends State<CanvasWidget> with AutomaticKeepAliveClientMixin {
   final _repaint = ValueNotifier<int>(0);
   TestingPainter _wavePainter;
 
@@ -29,6 +29,9 @@ class _CanvasWidgetState extends State<CanvasWidget> {
       painter: _wavePainter,
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class TestingPainter extends CustomPainter {
