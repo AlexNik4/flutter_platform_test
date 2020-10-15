@@ -25,6 +25,7 @@ class _CanvasWidgetState extends State<CanvasWidget> with AutomaticKeepAliveClie
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return CustomPaint(
       painter: _wavePainter,
     );

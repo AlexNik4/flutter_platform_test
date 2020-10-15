@@ -19,13 +19,10 @@ class _MultiCanvasScreenState extends State<MultiCanvasScreen> {
           title: Text("Performance"),
         ),
         body: ListView.builder(
-          // Let the ListView know how many items it needs to build.
           itemCount: listOfCanvases.length,
-          // Provide a builder function. This is where the magic happens.
-          // Convert each item into a widget based on the type of item it is.
           itemBuilder: (context, index) {
             return SizedBox(
-              height: MediaQuery.of(context).size.width > 600 ? 200 : 80,
+              height: MediaQuery.of(context).size.width > 600 ? 140 : 80,
               child: listOfCanvases[index],
             );
           },
