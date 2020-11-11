@@ -60,7 +60,7 @@ class TestingPainter extends CustomPainter {
       if (_currentIndex >= _pointsToDraw.length) {
         _currentIndex = 0;
       }
-      _pointsToDraw[_currentIndex] = _rng.nextInt(size.height.toInt()).toDouble();
+      _pointsToDraw[_currentIndex] = _rng.nextDouble() * size.height;
       _currentIndex++;
     }
 

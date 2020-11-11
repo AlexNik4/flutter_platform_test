@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform/screens/main_screen.dart';
 import 'package:flutter_platform/singletons/camera_provider.dart';
 import 'package:get_it/get_it.dart';
+import 'package:statsfl/statsfl.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,7 +11,9 @@ Future<void> main() async {
   await cameraProvider.init();
   GetIt.I.registerLazySingleton<CameraProvider>(() => cameraProvider);
 
-  runApp(MyApp());
+  runApp(StatsFl(
+    align: Alignment.bottomLeft,
+    child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
