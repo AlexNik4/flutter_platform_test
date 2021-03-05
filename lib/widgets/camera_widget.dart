@@ -3,11 +3,8 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform/singletons/camera_provider.dart';
 import 'package:get_it/get_it.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-
-import '../singletons/camera_provider.dart';
 
 // A screen that allows users to take a picture using a given camera.
 class CameraWidget extends StatefulWidget {
@@ -27,24 +24,28 @@ class CameraWidgetState extends State<CameraWidget> {
   @override
   void initState() {
     super.initState();
-    _camera = GetIt.I.get<CameraProvider>().firstCamera;
-    // To display the current output from the Camera,
-    // create a CameraController.
-    _controller = CameraController(_camera, ResolutionPreset.ultraHigh);
 
-    // Next, initialize the controller. This returns a Future.
-    try {
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      _camera = GetIt.I.get<CameraProvider>().firstCamera;
+
+      // To display the current output from the Camera,
+      // create a CameraController.
+      _controller = CameraController(
+        // Get a specific camera from the list of available cameras.
+        _camera,
+        // Define the resolution to use.
+        ResolutionPreset.veryHigh,
+      );
+
+      // Next, initialize the controller. This returns a Future.
       _initializeControllerFuture = _controller.initialize();
-    } catch (e) {
-      // If an error occurs, log the error to the console.
-      print(e);
     }
   }
 
   @override
   void dispose() {
     // Dispose of the controller when the widget is disposed.
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -52,6 +53,10 @@ class CameraWidgetState extends State<CameraWidget> {
   Widget build(BuildContext context) {
     if (kIsWeb) {
       return Center(child: Text("Not Supported on Web"));
+    }
+
+    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      return Center(child: Text("Not Supported on Desktop"));
     }
 
     return Scaffold(
@@ -63,7 +68,7 @@ class CameraWidgetState extends State<CameraWidget> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             // If the Future is complete, display the preview.
-            return CameraPreview(_controller);
+            return Center(child: CameraPreview(_controller));
           } else {
             // Otherwise, display a loading indicator.
             return Center(child: CircularProgressIndicator());
@@ -71,7 +76,6 @@ class CameraWidgetState extends State<CameraWidget> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        heroTag: "btn1",
         child: Icon(Icons.camera_alt),
         // Provide an onPressed callback.
         onPressed: () async {
@@ -81,23 +85,19 @@ class CameraWidgetState extends State<CameraWidget> {
             // Ensure that the camera is initialized.
             await _initializeControllerFuture;
 
-            // Construct the path where the image should be saved using the
-            // pattern package.
-            final path = join(
-              // Store the picture in the temp directory.
-              // Find the temp directory using the `path_provider` plugin.
-              (await getTemporaryDirectory()).path,
-              '${DateTime.now()}.png',
-            );
-
-            // Attempt to take a picture and log where it's been saved.
-            await _controller.takePicture(path);
+            // Attempt to take a picture and get the file `image`
+            // where it was saved.
+            final image = await _controller.takePicture();
 
             // If the picture was taken, display it on a new screen.
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(imagePath: path),
+                builder: (context) => DisplayPictureScreen(
+                  // Pass the automatically generated path to
+                  // the DisplayPictureScreen widget.
+                  imagePath: image?.path,
+                ),
               ),
             );
           } catch (e) {

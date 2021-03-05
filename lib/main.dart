@@ -11,9 +11,7 @@ Future<void> main() async {
   await cameraProvider.init();
   GetIt.I.registerLazySingleton<CameraProvider>(() => cameraProvider);
 
-  runApp(StatsFl(
-    align: Alignment.bottomLeft,
-    child: MyApp()));
+  runApp(StatsFl(align: Alignment.bottomLeft, child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

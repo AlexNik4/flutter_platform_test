@@ -40,7 +40,7 @@ class TestingPainter extends CustomPainter {
   final _rng = Random();
   final _paint = Paint();
 
-  List<double> _pointsToDraw = List<double>();
+  List<double> _pointsToDraw = <double>[];
   int _currentIndex = 0;
 
   TestingPainter({Listenable repaint}) : super(repaint: repaint) {
